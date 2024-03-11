@@ -5,11 +5,41 @@ from io import BytesIO
 import random
 import os
 import tempfile
+import boto3
 
-# Initialize Firebase Admin
-firebaseKey = "../serviceAccountKey.json"
-cred = credentials.Certificate(firebaseKey)
-firebase_admin.initialize_app(cred, {"storageBucket": "brainrot-24a7a.appspot.com"})
+def get_secret(secret_name, region_name="us-east-1"):
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(service_name='secretsmanager', region_name=region_name)
+    
+    try:
+        get_secret_value_response = client.get_secret_value(SecretId=secret_name)
+        if 'SecretString' in get_secret_value_response:
+            secret = get_secret_value_response['SecretString']
+            return json.loads(secret)
+    except Exception as e:
+        raise e
+    
+
+def initialize_firebase():
+    # Replace "YourFirebaseSecretName" with your actual secret name in AWS Secrets Manager
+    firebase_secrets = get_secret("FirebaseTwitchCredentialsVideoGenerator")
+
+    # Construct the credentials object from the fetched secret
+    firebase_cred = credentials.Certificate({
+        "type": "service_account",
+        "project_id": firebase_secrets["project_id"],
+        "private_key_id": firebase_secrets["private_key_id"],
+        "private_key": firebase_secrets["private_key"].replace('\\n', '\n'),
+        "client_email": firebase_secrets["client_email"],
+        "client_id": firebase_secrets["client_id"],
+        "auth_uri": firebase_secrets["auth_uri"],
+        "token_uri": firebase_secrets["token_uri"],
+        "auth_provider_x509_cert_url": firebase_secrets["auth_provider_x509_cert_url"],
+        "client_x509_cert_url": firebase_secrets["client_x509_cert_url"]
+    })
+
+    firebase_admin.initialize_app(firebase_cred, {"storageBucket": firebase_secrets["storageBucket"]})
 
 
 def process_videos():

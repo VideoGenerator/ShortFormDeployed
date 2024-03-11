@@ -129,6 +129,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+backend/venv/
 
 serviceAccountKey.json
 twitchKey.json

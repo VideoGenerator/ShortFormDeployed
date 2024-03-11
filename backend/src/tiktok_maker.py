@@ -1,14 +1,27 @@
 import json
 import requests
 import random
+import boto3
 from download_clip import download_clip
 from datetime import datetime, timedelta
 
+def get_secret(secret_name, region_name="us-east-1"):
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(service_name='secretsmanager', region_name=region_name)
+    
+    try:
+        get_secret_value_response = client.get_secret_value(SecretId=secret_name)
+        if 'SecretString' in get_secret_value_response:
+            secret = get_secret_value_response['SecretString']
+            return json.loads(secret)
+    except Exception as e:
+        raise e
 
 def fetch_and_download_twitch_clip(username):
-    # Load secrets from the JSON file
-    with open("../twitchKey.json", "r") as f:
-        secrets = json.load(f)
+    # Load secrets from the JSON file (In AWS Secrets Manager)
+    secrets = get_secret("FirebaseTwitchCredentialsVideoGenerator")
+
 
     url = "https://id.twitch.tv/oauth2/token"
     params = {
