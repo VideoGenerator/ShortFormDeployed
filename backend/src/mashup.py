@@ -56,7 +56,7 @@ def process_videos():
         # print("No video files found in the clips folder.")
         return
     video1_path = os.path.join(clips_folder, video_files[0])
-    video2_path = "minecraft/minecraftvideo.mp4"
+    video2_path = "../staticclips/minecraftvideo.mp4"
 
     # Load the videos
     clip1 = VideoFileClip(video1_path)

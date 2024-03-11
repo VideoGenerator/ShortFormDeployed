@@ -25,8 +25,8 @@ def fetch_and_download_twitch_clip(username):
 
     url = "https://id.twitch.tv/oauth2/token"
     params = {
-        "client_id": secrets["client_id"],
-        "client_secret": secrets["client_secret"],
+        "client_id": secrets["Twitch"]["client_id"],
+        "client_secret": secrets["Twitch"]["client_secret"],
         "grant_type": "client_credentials",
     }
 
@@ -35,7 +35,7 @@ def fetch_and_download_twitch_clip(username):
     access_token = data["access_token"]
 
     headers = {
-        "Client-ID": secrets["client_id"],
+        "Client-ID": secrets["Twitch"]["client_id"],
         "Authorization": f"Bearer {access_token}",
     }
 

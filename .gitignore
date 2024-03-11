@@ -137,3 +137,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#clip
+backend/srx/clips/
+
