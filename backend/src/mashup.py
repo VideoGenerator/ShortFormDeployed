@@ -23,8 +23,8 @@ def get_secret(secret_name, region_name="us-east-1"):
     
 
 def initialize_firebase():
-    # Replace "YourFirebaseSecretName" with your actual secret name in AWS Secrets Manager
-    firebase_secrets = get_secret("FirebaseTwitchCredentialsVideoGenerator")
+    secret = get_secret("FirebaseTwitchCredentialsVideoGenerator")
+    firebase_secrets = secret['Firebase'] 
 
     # Construct the credentials object from the fetched secret
     firebase_cred = credentials.Certificate({
