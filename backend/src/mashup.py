@@ -4,6 +4,7 @@ from moviepy.editor import VideoFileClip, CompositeVideoClip
 from io import BytesIO
 import random
 import os
+import json
 import tempfile
 import boto3
 
