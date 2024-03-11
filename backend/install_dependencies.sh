@@ -38,6 +38,10 @@ pip3 install firebase_admin
 echo "Installing moviepy..."
 pip3 install moviepy
 
+# Install boto3
+echo "Installing boto3..."
+pip3 install boto3
+
 echo "All Python dependencies have been installed successfully inside the virtual environment."
 
 # Reminder to deactivate the virtual environment when done
